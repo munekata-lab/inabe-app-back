@@ -28,7 +28,7 @@ def lambda_handler(event, context):
       ClientId = client_id
     )
 
-    jwt = response['AuthenticationResult']['IdToken']
+    jwt = response['AuthenticationResult']['AccessToken']
     return {
       'statuscode' : 200,
       'session' : jwt,
