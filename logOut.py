@@ -18,6 +18,7 @@ def lambda_handler(event):
         )
         return {
         'statuscode': 200,
+
         'body': json.dumps('Logged out')
         }
 
