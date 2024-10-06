@@ -4,6 +4,7 @@ import boto3
 def lambda_handler(event, contxt):
     email=event.get('email')
     token=event.get('session')
+    prePassword=event.get('prePassword')
     newPassword=event.get('newPassword')
 
     if email is None or token is None:
@@ -15,11 +16,10 @@ def lambda_handler(event, contxt):
     cognitoIdp=boto3.client('cognito-idp')
 
     try:
-        response=cognitoIdp.admin_set_user_password(
-            UserPoolId='ap-northeast-1_Esw3Y4ZGN',
-            Username=email,
-            Password=newPassword,
-            Permanent=True
+        response=cognitoIdp.change_password(
+            PreviousPassword=prePassword,
+            ProposedPassword=newPassword,
+            AccessToken=token
         )
 
         return {
@@ -33,7 +33,7 @@ def lambda_handler(event, contxt):
     except Exception as e:
         print(e)
         return {
-            'statusCode': 400,
+            'statuscode': 400,
             'body': json.dumps({
                 'message': 'Error changing password',
                 'error': str(e)
